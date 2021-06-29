@@ -1,5 +1,3 @@
-from django.http import response
-from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
@@ -14,9 +12,7 @@ from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
 
-from students.forms import CourseEnrollForm
-
-from .forms import ModuleFormSet
+from .forms import ModuleFormSet, CourseEnrollForm
 from .models import Course, Module, Content, Subject
 
 
