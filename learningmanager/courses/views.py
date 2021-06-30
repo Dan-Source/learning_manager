@@ -78,28 +78,31 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         self.course = get_object_or_404(Course, id=pk, owner=request.user)
         return super().dispatch(request, pk)
 
-    def get(self):
+    def get(self, request, *args, **kwargs):
         formset = self.get_formset()
-        response = {
+
+        return self.render_to_response({
             'course': self.course,
             'formset': formset
-        }
-        return self.render_to_response(response)
+        })
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
             return redirect('courses:manage_course_list')
-        response = {
+
+        return self.render_to_response({
             'course': self.course,
             'formset': formset
-        }
-        return self.render_to_response(response)
+        })
 
 
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     template_name = 'courses/manage/content/form.html'
+    module = None
+    model = None
+    obj = None
 
     def get_model(self, model_name):
         if model_name in ['text', 'video', 'image', 'file']:
@@ -120,11 +123,11 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             self.obj = get_object_or_404(self.model, id=id, owner=request.user)
         return super().dispatch(request, module_id, model_name, id)
 
-    def get(self):
+    def get(self, request, module_id, model_name, id=None):
         form = self.get_form(self.model, instance=self.obj)
         return self.render_to_response({'form': form, 'object': self.obj})
 
-    def post(self, request, id=None):
+    def post(self, request, module_id, module_name, id=None):
         form = self.get_form(
             self.model, instance=self.obj,
             data=request.POST, files=request.FILES
@@ -166,7 +169,7 @@ class CourseListView(TemplateResponseMixin, View):
     model = Course
     template_name = 'courses/course/list.html'
 
-    def get(self, subject=None):
+    def get(self, request, subject=None):
         subjects = cache.get('all_subjects')
         if not subjects:
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
@@ -184,12 +187,11 @@ class CourseListView(TemplateResponseMixin, View):
             if not courses:
                 courses = all_courses
                 cache.set('all_courses', courses)
-        response = {
+        return self.render_to_response({
             'subjects': subjects,
             'subject': subject,
             'courses': courses
-        }
-        return self.render_to_response(response)
+        })
 
 
 class CourseDetailView(DetailView):

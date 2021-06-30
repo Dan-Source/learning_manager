@@ -15,10 +15,9 @@ from .views import (
 app_name = 'courses'
 
 urlpatterns = [
+    path('mine/', ManageCourseListView.as_view(), name='manage_course_list'),
     path('', CourseListView.as_view(), name='course_list'),
     path('subject/<slug:subject>/', CourseListView.as_view(), name='course_list_subject'),
-    path('<slug:slug>/', CourseDetailView.as_view(), name='course_detail'),
-    path('mine/', ManageCourseListView.as_view(), name='manage_course_list'),
     path('create/', CourseCreateView.as_view(), name='course_create'),
     path('<pk>/edit/', CourseUpdateView.as_view(), name='course_edit'),
     path('<pk>/delete/', CourseDeleteView.as_view(), name='course_delete'),
@@ -35,6 +34,7 @@ urlpatterns = [
         'content/<int:id>/delete/',
         ContentDeleteView.as_view(), name='module_content_delete'
     ),
+    path('<slug:slug>/detail', CourseDetailView.as_view(), name='course_detail'),
     path(
         'module/<int:module_id>/',
         ModuleContentListView.as_view(), name='module_content_list'
