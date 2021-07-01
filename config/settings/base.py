@@ -86,6 +86,7 @@ LOCAL_APPS = [
     "learningmanager.users.apps.UsersConfig",
     "learningmanager.students.apps.StudentsConfig",
     "learningmanager.courses.apps.CoursesConfig",
+    "learningmanager.quiz.apps.QuizConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
