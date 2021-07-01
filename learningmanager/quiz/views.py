@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
+
 from .forms import QuestionForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from django.shortcuts import render
@@ -22,20 +24,17 @@ class SittingFilterTitleMixin(object):
         quiz_filter = self.request.GET.get('quiz_filter')
         if quiz_filter:
             queryset = queryset.filter(quiz__title__icontains=quiz_filter)
-
         return queryset
 
 
-class QuizListView(ListView):
+class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
-
-    # @login_required
     def get_queryset(self):
         queryset = super(QuizListView, self).get_queryset()
         return queryset.filter(draft=False)
 
 
-class QuizDetailView(DetailView):
+class QuizDetailView(LoginRequiredMixin, DetailView):
     model = Quiz
     slug_field = 'url'
 
@@ -49,11 +48,11 @@ class QuizDetailView(DetailView):
         return self.render_to_response(context)
 
 
-class CategoriesListView(ListView):
+class CategoriesListView(LoginRequiredMixin, ListView):
     model = Category
 
 
-class ViewQuizListByCategory(ListView):
+class ViewQuizListByCategory(LoginRequiredMixin, ListView):
     model = Quiz
     template_name = 'view_quiz_category.html'
 
@@ -76,7 +75,7 @@ class ViewQuizListByCategory(ListView):
         return queryset.filter(category=self.category, draft=False)
 
 
-class QuizUserProgressView(TemplateView):
+class QuizUserProgressView(LoginRequiredMixin, TemplateView):
     template_name = 'progress.html'
 
     @method_decorator(login_required)
@@ -96,8 +95,8 @@ class QuizMarkingList(QuizMarkerMixin, SittingFilterTitleMixin, ListView):
     model = Sitting
 
     def get_queryset(self):
-        queryset = super(QuizMarkingList, self).get_queryset()\
-                                               .filter(complete=True)
+        queryset = super(
+            QuizMarkingList, self).get_queryset().filter(complete=True)
 
         user_filter = self.request.GET.get('user_filter')
         if user_filter:
@@ -132,7 +131,7 @@ class QuizMarkingDetail(QuizMarkerMixin, DetailView):
         return context
 
 
-class QuizTake(FormView):
+class QuizTake(LoginRequiredMixin, FormView):
     form_class = QuestionForm
     template_name = 'quiz/question.html'
 
