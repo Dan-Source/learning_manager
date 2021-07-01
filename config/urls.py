@@ -24,7 +24,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('course/', include("courses.urls", namespace="courses")),
     path('student/', include("students.urls", namespace="students")),
-
+    path('quiz/', include("quiz.urls", namespace="quiz")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
