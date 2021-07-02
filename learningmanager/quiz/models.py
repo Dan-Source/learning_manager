@@ -18,7 +18,7 @@ from .validators import csv_file_validator
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from learningmanager.courses.models import Course
+from courses.models import Course
 
 
 class CategoryManager(models.Manager):

@@ -3,7 +3,7 @@ Base settings to build other settings files upon.
 """
 
 from pathlib import Path
-
+from decouple import config
 import environ
 
 # learningmanager/
@@ -45,10 +45,9 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dc8opi3dovrhvn',
-        'USER': 'aynaropvuftysz',
-        'PASSWORD':
-        '23f4c3c9ba38a05894d4aed6aee86ad45e92a1d789562c7e5cc7728dbe509e86',
+        'NAME': config('NAME'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
         'HOST': 'ec2-54-163-254-204.compute-1.amazonaws.com',
         'PORT': '5432',
     }
