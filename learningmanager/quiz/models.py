@@ -11,12 +11,11 @@ from django.utils.timezone import now
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from model_utils.managers import InheritanceManager
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import post_save
 import io
 from .signals import csv_uploaded
 from .validators import csv_file_validator
 from django.contrib.auth.models import User
-from django.contrib import messages
 
 from courses.models import Course
 
@@ -24,7 +23,7 @@ from courses.models import Course
 class CategoryManager(models.Manager):
     def new_category(self, category):
         new_category = self.create(
-            category=re.sub('\s+', '-', category).lower())
+            category=re.sub('s+', '-', category).lower())
 
         new_category.save()
         return new_category
@@ -138,7 +137,7 @@ class Quiz(models.Model):
     )
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        self.url = re.sub('\s+', '-', self.url).lower()
+        self.url = re.sub('s+', '-', self.url).lower()
 
         self.url = ''.join(
             letter for letter in self.url
@@ -243,7 +242,7 @@ class Progress(models.Model):
                 try:
                     percent = int(round(
                         (float(score) / float(possible)) * 100))
-                except:
+                except percent:
                     percent = 0
 
                 output[cat.category] = [score, possible, percent]

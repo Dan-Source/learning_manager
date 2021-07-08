@@ -16,12 +16,6 @@ class AnswerInline(admin.TabularInline):
 
 
 class QuizAdminForm(forms.ModelForm):
-    """
-        below is from
-        http://stackoverflow.com/questions/11657682/
-        django-admin-interface-using-horizontal-filter-with-
-        inline-manytomany-field
-    """
     class Meta:
         model = Quiz
         exclude = []
@@ -30,8 +24,10 @@ class QuizAdminForm(forms.ModelForm):
         queryset=Question.objects.all().select_subclasses(),
         required=False,
         label=_("Questions"),
-        widget=FilteredSelectMultiple(verbose_name=_("Questions"),
-                                      is_stacked=False))
+        widget=FilteredSelectMultiple(
+            verbose_name=_("Questions"), is_stacked=False
+        )
+    )
 
     def __init__(self, *args, **kwargs):
         super(QuizAdminForm, self).__init__(*args, **kwargs)
@@ -71,8 +67,10 @@ class MCQuestionAdmin(admin.ModelAdmin):
         'category',
     )
     list_filter = ('category', )
-    fields = ('content', 'category', 'figure', 'quiz', 'explanation',
-              'answer_order')
+    fields = (
+        'content', 'category', 'figure',
+        'quiz', 'explanation', 'answer_order'
+    )
 
     search_fields = ('content', 'explanation')
     filter_horizontal = ('quiz', )
@@ -81,10 +79,6 @@ class MCQuestionAdmin(admin.ModelAdmin):
 
 
 class ProgressAdmin(admin.ModelAdmin):
-    """
-    to do:
-            create a user section
-    """
     search_fields = (
         'user',
         'score',

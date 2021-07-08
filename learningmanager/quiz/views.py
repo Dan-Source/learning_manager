@@ -8,7 +8,6 @@ from django.views.generic.edit import FormView
 
 from .forms import QuestionForm
 from .models import Quiz, Category, Progress, Sitting, Question
-from django.shortcuts import render
 
 
 class QuizMarkerMixin(object):
@@ -29,6 +28,7 @@ class SittingFilterTitleMixin(object):
 
 class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
+
     def get_queryset(self):
         queryset = super(QuizListView, self).get_queryset()
         return queryset.filter(draft=False)
