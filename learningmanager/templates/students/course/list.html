@@ -1,23 +1,40 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}My courses{% endblock %}
 
 {% block content %}
-  <h1>My courses</h1>
+<h1> Meus Cursos </h1>
 
-  <div class="module">
-    {% for course in object_list %}
-      <div class="course-info">
-        <h3>{{ course.title }}</h3>
-        <p><a href="{% url 'students:student_course_detail' course.id %}">
-        Access contents</a></p>
+<div class="row module">
+
+  {% for course in object_list %}
+  <div class='col-md-8'>
+    <div class="card course-info">
+      <div class="card-body">
+        <h4 class="card-title">{{ course.title }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Colocar a categoria ou descricão</h6>
+        <p class="card-text">
+
+        </p>
+        <a href="{% url 'students:student_course_detail' course.id %}" class="card-link">
+          Acesse os conteúdos
+        </a>
       </div>
-    {% empty %}
-      <p>
-        You are not enrolled in any courses yet.
-        <a href="{% url 'courses:course_list' %}">Browse courses</a>
-        to enroll in a course.
-      </p>
-    {% endfor %}
+    </div>
   </div>
+  {% empty %}
+  <div class='col-md-8'>
+    <div class="card course-info">
+      <div class="card-body">
+        <h4 class="card-title">Você ainda não ingressou em nenhum curso.</h4>
+        <p class="card-text">
+          <a href="{% url 'courses:course_list' %}" class="card-link"> Vejos nossos cursos</a>
+          e ingresse no que gostar.
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
