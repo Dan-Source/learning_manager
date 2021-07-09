@@ -2,7 +2,6 @@
 Base settings to build other settings files upon.
 """
 
-import dj_database_url
 from pathlib import Path
 from decouple import config
 import environ
@@ -44,14 +43,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('NAME'),
-        'USER': config('USER_DB'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': config('HOST'),
-        'PORT': '5432',
-    }
+    'default': {}
 }
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

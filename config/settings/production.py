@@ -1,5 +1,7 @@
 from .base import *  # noqa
 from .base import env
+import dj_database_url
+
 
 # GENERAL
 # ------------------------------------------------------------------------------
