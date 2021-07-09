@@ -3,7 +3,7 @@ Base settings to build other settings files upon.
 """
 
 from pathlib import Path
-from decouple import config
+import dj_database_url
 import environ
 
 # learningmanager/
