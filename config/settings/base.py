@@ -2,6 +2,7 @@
 Base settings to build other settings files upon.
 """
 
+import dj_database_url
 from pathlib import Path
 from decouple import config
 import environ
@@ -53,6 +54,10 @@ DATABASES = {
     }
 }
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# Data
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # URLS
 # ------------------------------------------------------------------------------
