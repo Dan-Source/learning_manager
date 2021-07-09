@@ -1,1 +1,1 @@
-web: gunicorn learningmanager.config.wsgi --log-file -
+web: gunicorn learningmanager.wsgi --log-file -
