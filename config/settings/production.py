@@ -1,6 +1,7 @@
 from .base import *  # noqa
 from .base import env
 
+
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -182,3 +183,5 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
