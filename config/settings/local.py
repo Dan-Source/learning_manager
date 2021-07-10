@@ -1,4 +1,5 @@
 from .base import *  # noqa
+from decouple import config
 from .base import env
 
 # GENERAL
@@ -62,3 +63,4 @@ INSTALLED_APPS += ["django_extensions"]  # noqa: F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+

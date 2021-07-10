@@ -3,7 +3,7 @@ Base settings to build other settings files upon.
 """
 
 from pathlib import Path
-from decouple import config
+import dj_database_url
 import environ
 
 # learningmanager/
@@ -19,13 +19,12 @@ if Path(ENV_FILE).exists():
 
 # GENERAL
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool("DJANGO_DEBUG", False)
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Recife"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "pt-br"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -43,16 +42,13 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('NAME',  default=''),
-        'USER': config('USER_DB',  default=''),
-        'PASSWORD': config('PASSWORD', default=''),
-        'HOST': config('HOST', default=''),
-        'PORT': '5432',
-    }
+    'default': {}
 }
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+# Data
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 # URLS
 # ------------------------------------------------------------------------------
