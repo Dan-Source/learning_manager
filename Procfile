@@ -1,1 +1,1 @@
-web: gunicorn learning_manager.config.wsgi
+web: gunicorn config.wsgi
