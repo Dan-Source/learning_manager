@@ -183,5 +183,3 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
