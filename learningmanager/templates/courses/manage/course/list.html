@@ -1,27 +1,40 @@
 {% extends "base.html" %}
-{% block title %}My courses{% endblock %}
+{% block title %}Meus Cursos{% endblock %}
 {% block content %}
-<h1>My courses</h1>
+<h1>Meus Cursos</h1>
 <div class="module">
     {% for course in object_list %}
     <div class="course-info">
-        <h3>{{ course.title }}</h3>
-        <p>
-            <a href="{% url 'courses:course_edit' course.id %}">Edit</a>
-            <a href="{% url 'courses:course_delete' course.id %}">Delete</a>
-            <a href="{% url 'courses:course_module_update' course.id %}">Edit modules</a>
-            {% if course.modules.count > 0 %}
-            <a href="{% url 'courses:module_content_list' course.modules.first.id %}">
-            Manage contents</a>
-            {% endif %}
-        </p>
+
+        <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card-header">{{ course.title }}</div>
+            <p class="card-text">
+            <div class="btn-group" role="group" aria-label="Ações">
+                <a role="button" class="btn  btn-outline-danger"
+                    href="{% url 'courses:course_delete' course.id %}">Apagar</a>
+                <a role="button" class="btn  btn-outline-secondary"
+                    href="{% url 'courses:course_edit' course.id %}">Editar</a>
+                <a role="button" class="btn  btn-outline-secondary"
+                    href="{% url 'courses:course_module_update' course.id %}">Atualizar
+                    Modulos</a>
+                {% if course.modules.count > 0 %}
+                <a role="button" class="btn  btn-outline-secondary"
+                    href="{% url 'courses:module_content_list' course.modules.first.id %}">
+                    Gerênciar conteúdos
+                </a>
+                {% endif %}
+                </p>
+            </div>
+        </div>
+
+        {% empty %}
+        <h3 class="text-muted">Você ainda não criou nenhum curso.</h3>
+        {% endfor %}
+        <div class="col-lg-4">
+
+            <a href="{% url 'courses:course_create' %}" class="btn btn-lg btn-primary" role="button">
+                Criar Novo Curso
+            </a>
+        </div>
     </div>
-    {% empty %}
-    <p>You haven't created any courses yet.</p>
-    {% endfor %}
-    <p>
-        <a href="{% url "courses:course_create" %}" class="button">Create new
-            course</a>
-    </p>
-</div>
-{% endblock %}
+    {% endblock %}
