@@ -6,54 +6,55 @@
 {% endblock %}
 
 {% block content %}
-<h1>
-  {{ module.title }}
-</h1>
-<div class="contents">
-  <h3>Modules</h3>
-  <ul id="modules">
-    {% for m in object.modules.all %}
-    <li data-id="{{ m.id }}" {% if m == module %}class="selected" {% endif %}>
-      <a href="{% url 'students:student_course_detail_module' object.id m.id %}">
-        <span>
-          Module <span class="order">{{ m.order|add:1 }}</span>
-        </span>
-        <br>
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-lg-4">
+    <div class="list-group">
+      {% for m in object.modules.all %}
+      <a data-id="{{ m.id }}"
+        class="list-group-item list-group-item-action {% if m.title == module.title %} active {% endif %}"
+        href="{% url 'students:student_course_detail_module' object.id m.id %}">
         {{ m.title }}
+        <br>
+        <span class="badge rounded-pill bg-light">
+          Modulo {{ m.order|add:1 }}
+        </span>
       </a>
-    </li>
-    {% empty %}
-    <li>No modules yet.</li>
-    {% endfor %}
-  </ul>
+      {% empty %}
+      <p>No modules yet.</p>
+      {% endfor %}
+      {% for quiz in object.quiz.all %}
+      <a class="list-group-item list-group-item-action {% if quiz == quiz %} active {% endif %}" data-id="{{ quiz.id }}"
+        href="{% url 'quiz:quiz_start_page' slug=quiz.url %}">
+        {{ quiz.title }}
+      </a>
+      {% empty %}
+      <a href="#" class="list-group-item list-group-item-action disabled">Sem perguntas.</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="content" class="col-lg-8">
+    <!-- Page Content -->
+    <h1>
+      {{ module.title }}
+    </h1>
+    <div class="module">
+      <!-- Depois configurar para 600 -->
+      {% cache 0 module_contents module %}
+      {% for content in module.contents.all %}
+      {% with item=content.item %}
+      <h2>{{ item.title }}</h2>
+      {{ item.render }}
+      {% endwith %}
+      {% endfor %}
+      {% endcache %}
+      {{ module.qui}}
+    </div>
+  </div>
 </div>
-<h3>Quiz</h3>
-<ul id="quiz">
-  {% for quiz in object.quiz.all %}
-  <li data-id="{{ quiz.id }}" {% if quiz == quiz %}class="selected" {% endif %}>
-    <a href="{% url 'quiz:quiz_start_page' slug=quiz.url %}">
-      <span>
-        Quiz <span>{{ quiz.title }}</span>
-      </span>
-      {{ quiz.title }}
-    </a>
-    <br>
-  </li>
-  {% empty %}
-  <li>No quiz yet.</li>
-  {% endfor %}
-</ul>
 </div>
-<div class="module">
-  <!-- Depois configurar para 600 -->
-  {% cache 0 module_contents module %}
-  {% for content in module.contents.all %}
-  {% with item=content.item %}
-  <h2>{{ item.title }}</h2>
-  {{ item.render }}
-  {% endwith %}
-  {% endfor %}
-  {% endcache %}
-  {{ module.qui}}
-</div>
+
+
+
 {% endblock %}

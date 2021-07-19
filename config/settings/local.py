@@ -70,3 +70,14 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db-django',
+        'USER': 'django',
+        'PASSWORD': 'Teste123',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
+    }
+}

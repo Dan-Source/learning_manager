@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 {% block title %}
 Editando "{{ course.title }}"
 {% endblock %}
@@ -7,15 +7,16 @@ Editando "{{ course.title }}"
 <h1>Editar "{{ course.title }}"</h1>
 <div class="module col-lg-8 col-md-offset-2">
     <h2>Modulos do Curso</h2>
-
-    <form method="post">
-        {{ formset.management_form|crispy }}
-        {% for form in formset %}
-        <h3 class="text-muted">Modulo {{ forloop.counter }}</h3>
-        {% crispy form %}
-        {% endfor %}
+    <form action="." method="post">
+        {{ formset.management_form|crispy}}
         {% csrf_token %}
-        <input class="btn btn-lg btn-primary" type="submit" value="Salvar">
+        {% for form in formset %}
+        <h3 class="text-muted"> Modulo {{ forloop.counter }}</h3>
+        {{ form|crispy }}
+        {% endfor %}
+        <p>
+            <input class="btn btn-lg btn-primary" type="submit" value="Salvar">
+        </p>
     </form>
 </div>
 {% endblock %}

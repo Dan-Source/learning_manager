@@ -42,7 +42,14 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': {}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db-django',
+        'USER': 'django',
+        'PASSWORD': 'Teste123',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
+    }
 }
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

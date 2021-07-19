@@ -2,67 +2,102 @@
 {% load course %}
 
 {% block title %}
-  Module {{ module.order|add:1 }}: {{ module.title }}
+Modulo {{ module.order|add:1 }}: {{ module.title }}
 {% endblock %}
 
 {% block content %}
-  {% with course=module.course %}
-    <h1>Course "{{ course.title }}"</h1>
-    <div class="contents">
-      <h3>Modules</h3>
-      <ul id="modules">
+{% with course=module.course %}
+<h1>{{ course.title }}</h1>
+<div class="contents">
+  <div class="row align-items-start">
+    <div class="col-lg-4">
+      <h3>Lista de Modulos</h3>
+      <div class="d-grid gap-2">
+        <a role="button" class="btn btn-light" href=" {% url 'courses:course_module_update' course.id %}">
+          Editar modulos
+        </a>
+      </div>
+      <div class="list-group">
         {% for m in course.modules.all %}
-          <li data-id="{{ m.id }}" {% if m == module %}
-           class="selected"{% endif %}>
-            <a href="{% url "courses:module_content_list" m.id %}">
-              <span>
-                Module <span class="order">{{ m.order|add:1 }}</span>
-              </span>
-              <br>
-              {{ m.title }}
-            </a>
-          </li>
+        <a href="{% url 'courses:module_content_list' m.id %}"
+          class="list-group-item list-group-item-action {% if m.title == module.title %} active {% endif %}">
+          {{ m.title }}
+        </a>
         {% empty %}
-          <li>No modules yet.</li>
-        {% endfor %}
-      </ul>
-      <p><a href="{% url "courses:course_module_update" course.id %}">
-      Edit modules</a></p>
-    </div>
-    <div class="module">
-      <h2>Module {{ module.order|add:1 }}: {{ module.title }}</h2>
-      <h3>Module contents:</h3>
-
-      <div id="module-contents">
-        {% for content in module.contents.all %}
-          <div data-id="{{ content.id }}">
-            {% with item=content.item %}
-              <p>{{ item }} ({{ item|model_name }})</p>
-              <a href="{% url "courses:module_content_update" module.id item|model_name item.id %}">
-                Edit
-              </a>
-              <form action="{% url "courses:module_content_delete" content.id %}" method="post">
-                <input type="submit" value="Delete">
-                {% csrf_token %}
-              </form>
-            {% endwith %}
-          </div>
-        {% empty %}
-          <p>This module has no contents yet.</p>
+        <h3 class="text-muted">Não há modulos ainda.</h3>
         {% endfor %}
       </div>
-      <h3>Add new content:</h3>
-      <ul class="content-types">
-        <li><a href="{% url "courses:module_content_create" module.id "text" %}">
-        Text</a></li>
-        <li><a href="{% url "courses:module_content_create" module.id "image" %}">
-        Image</a></li>
-        <li><a href="{% url "courses:module_content_create" module.id "video" %}">
-        Video</a></li>
-        <li><a href="{% url "courses:module_content_create" module.id "file" %}">
-        File</a></li>
-      </ul>
+      <h4 class="text-muted">Adicione um novo conteúdo:</h4>
+      <div class="d-grid gap-2">
+        <a type='button' class='btn btn-light' href="{% url 'courses:module_content_create' module.id 'text' %}">
+          Texto</a></li>
+        <a type='button' class='btn btn-light' href="{% url 'courses:module_content_create' module.id 'image' %}">
+          Imagem</a></li>
+        <a type='button' class='btn btn-light' href="{% url 'courses:module_content_create' module.id 'video' %}">
+          Vídeo</a></li>
+        <a type='button' class='btn btn-light' href="{% url 'courses:module_content_create' module.id 'file' %}">
+          Arquivo</a></li>
+      </div>
     </div>
-  {% endwith %}
-{% endblock %}
+    <div class="col-lg-8">
+      <div class="module">
+        <h2>{{ module.title }}</h2>
+        <h3>Conteúdos:</h3>
 
+        <div id="module-contents">
+          <table class="table">
+            <caption>Listagem dos tipos de conteúdos</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for content in module.contents.all %}
+              <div data-id="{{ content.id }}">
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>
+                    {% with item=content.item %}
+                    {{ item }}
+                  </td>
+                  <td>
+                    <span class="badge rounded-pill bg-info">{{ item|model_name }}</span>
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <a class="btn btn-outline-info" role='button'
+                        href="{% url 'courses:module_content_update' module.id item|model_name item.id %}">
+                        Editar
+                      </a>
+                      <form action="{% url 'courses:module_content_delete' content.id %}" method="post">
+                        <input class="btn btn-outline-danger" type="submit" value="Apagar">
+                        {% csrf_token %}
+                      </form>
+
+                    </div>
+                  </td>
+                </tr>
+                {% endwith %}
+              </div>
+
+              {% empty %}
+              <p>Este modulo ainda não tem conteúdos.</p>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endwith %}
+{% endblock %}

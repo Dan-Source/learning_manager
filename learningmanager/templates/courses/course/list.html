@@ -41,14 +41,22 @@ Cursos
       {% for course in courses %}
       {% with subject=course.subject %}
       <div class="card border-light mb-3">
-        <div class="card-header">
+        <div class="card-text">
           {% if course.owner.get_full_name %}
-          {{ course.owner.get_full_name }}
+          <span class="badge rounded-pill bg-secondary">
+            Autor:
+            {{ course.owner.get_full_name }}
+          </span>
           {% else %}
-          Instrutor
+          <span class="badge rounded-pill bg-secondary">
+            Autor não identificado
+          </span>
           {% endif%}
-
-
+          <a href="{% url 'courses:course_list_subject' subject.slug %}">
+            <span class="badge rounded-pill bg-danger">
+              {{ subject }}
+            </span>
+          </a>
         </div>
         <div class="card-body">
           <h4 class="card-title">
@@ -62,8 +70,7 @@ Cursos
             <span class="badge bg-light">{{ course.total_modules }} módulos</span>
 
           </p>
-          <a type="button" class="btn btn-primary btn-sm float-rigth"
-            href="{% url 'courses:course_list_subject' subject.slug %}">{{ subject }}</a>
+          
         </div>
       </div>
       {% endwith %}
