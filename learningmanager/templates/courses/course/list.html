@@ -57,6 +57,8 @@ Cursos
               {{ subject }}
             </span>
           </a>
+          <span class="badge bg-light">{{ course.total_modules }} módulos</span>
+
         </div>
         <div class="card-body">
           <h4 class="card-title">
@@ -65,10 +67,7 @@ Cursos
             </a>
           </h4>
           <p class="card-text">
-            Some quick example text to build on the card title and make up the bulk of the card's
-            content.
-            <span class="badge bg-light">{{ course.total_modules }} módulos</span>
-
+            {{course.overview|linebreaks}}
           </p>
           
         </div>

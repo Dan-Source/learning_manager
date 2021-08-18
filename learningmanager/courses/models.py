@@ -4,12 +4,10 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
-from django.db.models.fields import related
-from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.template.loader import render_to_string
-from environ.environ import VERSION
 
 from model_utils.models import TimeStampedModel
+
 from .fields import OrderField
 
 

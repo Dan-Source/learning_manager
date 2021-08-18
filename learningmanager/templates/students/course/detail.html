@@ -43,10 +43,9 @@
       <!-- Depois configurar para 600 -->
       {% cache 0 module_contents module %}
       {% for content in module.contents.all %}
-      {% with item=content.item %}
-      <h2>{{ item.title }}</h2>
-      {{ item.render }}
-      {% endwith %}
+        {% with item=content.item %}
+            {{ item.render }}
+        {% endwith %}
       {% endfor %}
       {% endcache %}
       {{ module.qui}}
