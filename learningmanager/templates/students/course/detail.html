@@ -21,17 +21,21 @@
         </span>
       </a>
       {% empty %}
-      <p>No modules yet.</p>
-      {% endfor %}
-      {% for quiz in object.quiz.all %}
-      <a class="list-group-item list-group-item-action {% if quiz == quiz %} active {% endif %}" data-id="{{ quiz.id }}"
-        href="{% url 'quiz:quiz_start_page' slug=quiz.url %}">
-        {{ quiz.title }}
-      </a>
-      {% empty %}
-      <a href="#" class="list-group-item list-group-item-action disabled">Sem perguntas.</a>
+      <p>Não há modulos ainda.</p>
       {% endfor %}
     </div>
+    {% for quiz in object.quiz.all %}
+    <a class="list-group-item list-group-item-action" data-id="{{ quiz.id }}"
+      href="{% url 'quiz:quiz_start_page' slug=quiz.url %}">
+      {{ quiz.title }}
+      <span class="badge rounded-pill bg-danger">
+        Quiz
+      </span>
+    </a>
+    
+    {% empty %}
+    <a href="#" class="list-group-item list-group-item-action disabled">Sem perguntas.</a>
+    {% endfor %}
   </div>
 
   <div id="content" class="col-lg-8">
@@ -43,9 +47,9 @@
       <!-- Depois configurar para 600 -->
       {% cache 0 module_contents module %}
       {% for content in module.contents.all %}
-        {% with item=content.item %}
-            {{ item.render }}
-        {% endwith %}
+      {% with item=content.item %}
+      {{ item.render }}
+      {% endwith %}
       {% endfor %}
       {% endcache %}
       {{ module.qui}}

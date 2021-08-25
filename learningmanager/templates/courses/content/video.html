@@ -1,2 +1,5 @@
 {% load embed_video_tags %}
-{% video item.url "small" %}
+<h4>{{item.title}}</h4>
+<div class="embed-responsive embed-responsive-16by9">
+    {% video item.url "medium" %}
+</div>
