@@ -720,8 +720,8 @@ class MCQQuestion(Question):
     def order_answers(self, queryset):
         if self.answer_order == 'content':
             return queryset.order_by('content')
-        if self.answer_order == 'none':
-            return queryset.order_by('None')
+        else:
+            return queryset
 
     def get_answers(self):
         return self.order_answers(Answer.objects.filter(question=self))

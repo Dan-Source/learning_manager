@@ -8,12 +8,18 @@
   {{ object.title }}
 </h1>
 <div class="module">
-  <h2>Overview</h2>
+  <h2>Resumo</h2>
   <p>
-    <a href="{% url 'courses:course_list_subject' subject.slug %}">
-      {{ subject.title }}</a>.
-    {{ object.modules.count }} modules.
-    Instructor: {{ object.owner.get_full_name }}
+    <a
+      href="{% url 'courses:course_list_subject' subject.slug %}">
+      <span class="badge rounded-pill bg-secondary">
+        {{ subject.title }}
+      </span>
+    </a>
+    <span class="badge bg-light">
+      {{ object.modules.count }} modulos.
+    </span>
+    <small class="text-muted">Instrutor: {{ object.owner.get_full_name }}</small>
   </p>
   {{ object.overview|linebreaks }}
 </div>
@@ -21,11 +27,11 @@
 <form action="{% url 'students:student_enroll_course' %}" method="post">
   {{ enroll_form }}
   {% csrf_token %}
-  <input type="submit" value="Enroll now">
+  <input type="submit" value="Inscreva-se agora" class="btn btn-primary">
 </form>
 {% else %}
-<a href="{% url 'account_login' %}" class="button">
-  Register to enroll
+<a href="{% url 'account_login' %}" class="btn btn-link">
+  Inscreva-se
 </a>
 {% endif %}
 {% endwith %}

@@ -4,11 +4,10 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
-from django.db.models.fields import related
-from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.template.loader import render_to_string
 
 from model_utils.models import TimeStampedModel
+
 from .fields import OrderField
 
 
@@ -41,7 +40,7 @@ class Course(TimeStampedModel):
     title = models.CharField('Titulo', max_length=200)
     slug = AutoSlugField(
         unique=True, always_update=False, populate_from="title")
-    overview = models.TextField()
+    overview = models.TextField(verbose_name="Resumo")
     students = models.ManyToManyField(
         User, related_name='courses_joined', blank=True
     )
@@ -56,11 +55,17 @@ class Course(TimeStampedModel):
 
 
 class Module(models.Model):
-    course = models.ForeignKey(Course,
-                               related_name='modules',
-                               on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    course = models.ForeignKey(
+        Course,
+        verbose_name='Course',
+        related_name='modules',
+        on_delete=models.CASCADE
+    )
+    title = models.CharField('Titulo',max_length=200)
+    description = models.TextField(
+            verbose_name="Descrição",
+            blank=True
+    )
     order = OrderField(blank=True, for_fields=['course'])
 
     class Meta:
@@ -71,11 +76,15 @@ class Module(models.Model):
 
 
 class Content(models.Model):
-    module = models.ForeignKey(Module,
-                               related_name='contents',
-                               on_delete=models.CASCADE)
+    module = models.ForeignKey(
+        Module,
+        verbose_name='Modulo',
+        related_name='contents',
+        on_delete=models.CASCADE
+        )
     content_type = models.ForeignKey(
         ContentType,
+        verbose_name='Tipo de Conteúdo',
         on_delete=models.CASCADE,
         limit_choices_to={'model__in': (
             'text',
@@ -95,7 +104,7 @@ class ItemBase(TimeStampedModel):
     owner = models.ForeignKey(
         User, related_name='%(class)s_related', on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=250)
+    title = models.CharField(verbose_name='Titulo', max_length=250)
 
     class Meta:
         abstract = True
@@ -109,16 +118,16 @@ class ItemBase(TimeStampedModel):
 
 
 class Text(ItemBase):
-    content = models.TextField()
+    content = models.TextField(verbose_name='Conteúdo')
 
 
 class File(ItemBase):
-    file = models.FileField(upload_to='files')
+    file = models.FileField(verbose_name='Arquivo', upload_to='files')
 
 
 class Image(ItemBase):
-    url = models.URLField()
+    url = models.URLField(verbose_name='URL de uma Imagem')
 
 
 class Video(ItemBase):
-    url = models.URLField()
+    url = models.URLField(verbose_name='URL vídeo de um Vídeo',)
